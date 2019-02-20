@@ -7,37 +7,88 @@
 //
 
 #import "HomeViewController.h"
-#import "UIButton+RACCommandSupport.h"
+#import "ReactiveObjC.h"
+#import "AttributedImageLabelViewController.h"
 
-@interface HomeViewController ()
+@interface HomeViewController ()<UITableViewDelegate,UITableViewDataSource>
+
 @property(nonatomic, strong)UIButton *btn;
+@property (nonatomic, strong) UITableView *mTableView;
+
+
 @end
 
 @implementation HomeViewController
 
+- (UITableView *)mTableView {
+    if (!_mTableView) {
+        _mTableView = [[UITableView alloc]initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        _mTableView.delegate = self;
+        _mTableView.dataSource = self;
+    }
+    return _mTableView;
+}
+
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self setUpSubViews];
 }
 
 - (void)setUpSubViews{
-    self.btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.view addSubview:self.btn];
-    [self.btn.rac_command ]
+//    self.btn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [self.view addSubview:self.btn];
+//    [[self.btn rac_signalForControlEvents:UIControlEventTouchUpInside]subscribeNext:^(__kindof UIControl * _Nullable x) {
+//
+//    }];
+    [self.view addSubview:self.mTableView];
+    
+    
 }
 
 - (void)setUpBtn {
     
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - UITableViewDelegate
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
 }
-*/
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 50.0f;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *cellID = @"HomeBaseCellId";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (!cell) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+    }
+    cell.textLabel.text = @"";
+    if (indexPath.row == 0) {
+        cell.textLabel.text = @"AttributedImageLabel";
+    }
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.row) {
+        case 0:
+        {
+            AttributedImageLabelViewController *vc = [[AttributedImageLabelViewController alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
 
 @end
