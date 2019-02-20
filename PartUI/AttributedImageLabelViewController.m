@@ -23,6 +23,7 @@
         _mLabel.numberOfLines = 0;
         _mLabel.font = [UIFont systemFontOfSize:15];
         
+        ///图文展示
         NSString *text = @"这是一段测试文案";
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]initWithString:text attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:18], NSForegroundColorAttributeName:[UIColor redColor],}];
         UIImage *image = [UIImage imageNamed:@"提奖标签"];
